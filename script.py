@@ -378,7 +378,7 @@ elif options == "Doubles Competitor Rankings":
                 comp_table.`name` as `Name`,
                 comp_rank.points as Points
         from  Competitors_Table as comp_table
-        inner join  Competitor_rankings_Table as comp_rank
+        inner join  Competitor_Rankings_Table as comp_rank
         on   comp_table.competitor_id = comp_rank.competitor_id;              
         """
         rank_points_data = fetch_data(doubles_query)
@@ -397,7 +397,7 @@ elif options == "Doubles Competitor Rankings":
                 comp_rank.`rank` as com_rank,
                 comp_table.`name` as com_name
          from  Competitors_Table as comp_table
-        inner join  Competitor_rankings_Table as comp_rank
+        inner join  Competitor_Rankings_Table as comp_rank
         on   comp_table.competitor_id = comp_rank.competitor_id
         )t 
         where com_rank < '6';             
@@ -418,7 +418,7 @@ elif options == "Doubles Competitor Rankings":
                 comp_table.`name` as com_name,
                 comp_rank.`rank` as com_rank
         from  Competitors_Table as comp_table
-        inner join  Competitor_rankings_Table as comp_rank
+        inner join  Competitor_Rankings_Table as comp_rank
         on   comp_table.competitor_id = comp_rank.competitor_id
         )t 
         where com_movement = '0'
@@ -443,7 +443,7 @@ elif options == "Doubles Competitor Rankings":
                 comp_table.country as Country,
                 comp_rank.`rank` as `Rank`
         from  Competitors_Table as comp_table
-        join  Competitor_rankings_Table as comp_rank
+        join  Competitor_Rankings_Table as comp_rank
         on    comp_table.competitor_id = comp_rank.competitor_id
         )t 
         where Country = 'croatia'
@@ -478,7 +478,7 @@ elif options == "Doubles Competitor Rankings":
                 comp_rank.points as `Total Points`,
                 comp_table.country as Country
         from  Competitors_Table as comp_table
-        join  Competitor_rankings_Table as comp_rank
+        join  Competitor_Rankings_Table as comp_rank
         on    comp_table.competitor_id = comp_rank.competitor_id
         )t  where `Rank`= 1 ;
         """
