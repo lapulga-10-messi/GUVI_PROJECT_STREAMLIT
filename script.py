@@ -52,7 +52,7 @@ if options == "Home":
                         comp_table.`name` as `Name`,
                         comp_table.country as Country
                 from  Competitors_Table as comp_table
-                inner join  Competitor_rankings_Table as comp_rank
+                inner join  Competitor_Rankings_Table as comp_rank
                 on   comp_table.competitor_id = comp_rank.competitor_id
                 )t WHERE {where_clause};
                 """
@@ -69,7 +69,7 @@ if options == "Home":
     st.subheader("Summary Statistics")
     total_competitors = fetch_data("SELECT COUNT(competitor_id) FROM Competitors_Table;").iloc[0, 0]
     total_countries = fetch_data("SELECT COUNT(DISTINCT country) FROM Competitors_Table;").iloc[0, 0]
-    highest_points = fetch_data("SELECT MAX(points) FROM Competitor_rankings_Table;").iloc[0, 0]
+    highest_points = fetch_data("SELECT MAX(points) FROM Competitor_Rankings_Table;").iloc[0, 0]
 
     st.metric("Total Competitors", total_competitors)
     st.metric("Total Countries Represented", total_countries)
@@ -91,7 +91,7 @@ if options == "Home":
                 comp_table.`name` as `Name`,
                 comp_table.country as Country
       from  Competitors_Table as comp_table
-      inner join  Competitor_rankings_Table as comp_rank
+      inner join  Competitor_Rankings_Table as comp_rank
       on   comp_table.competitor_id = comp_rank.competitor_id         
       )t WHERE `Rank` BETWEEN {min_rank} AND {max_rank}
       ORDER BY `Rank`
