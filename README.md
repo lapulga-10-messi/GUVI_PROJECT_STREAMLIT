@@ -27,3 +27,5 @@ Password
 AVNS_ozTCcwHYoNvj53twyRY
 
 Once the connection is established run the script.py file on ide and a url will be displayed in the terminal of the ide that script.py is executed in .
+
+As I have already deployed this app you can access this using the url in the url.txt
