@@ -1,0 +1,282 @@
+   ; QUERIES FOR COMPETITIONS ANALYSIS;
+
+1)
+select
+    com.comp_name,
+    cat.cat_name
+from competitions_table as com
+join category_table as cat
+ON com.cat_id = cat.cat_id
+    
+2)
+sselect distinct
+		category_name,
+		count(*) over(partition by category_name) no_of_comps_in_each_category  
+	FROM (
+	 select
+       com.comp_name as competition_name,
+       cat.cat_name as category_name
+     from 
+      competitions_table as com
+     join
+      category_table as cat
+     ON 
+      com.cat_id = cat.cat_id 
+	) t
+
+3) 
+
+select 
+	comp_name as Doubles Competitions ;
+from competitions_table
+where comp_type = 'doubles' 
+
+4)
+select Competition_Name
+from
+	(select
+		com.comp_name as Competition_Name,
+		cat.cat_name as Category_Name
+	from competitions_table as com		
+	join category_table as cat		
+	ON com.cat_id = cat.cat_id	
+    )t	where Category_Name = 'ITF Men'
+
+5)
+select
+    parent.comp_name AS Parent_Competition,
+    child.comp_name AS Sub_Competition
+from competitions_table AS parent    
+join competitions_table AS child
+on parent.comp_id = child.comp_parent_id;
+    
+
+
+6)
+ select distinct
+		cat.cat_name as `Category Name`, 
+		com.comp_type as `Competition type`, 
+		count(*) over(partition by cat.cat_name, com.comp_type ) as` Number of competitions`
+	from 
+		competitions_table as com
+	inner join 
+		category_table as cat
+	on
+		com.cat_id = cat.cat_id
+	
+7)
+
+select 
+      comp_name
+from competitions_table
+where comp_parent_id ='0';
+
+
+                                  ;QUERIES FOR COMPLEXES ANALYSIS;
+
+1)
+select 
+    ven.venue_name as `Venue Name`, 
+	com.complex_name as `Complex Name`
+from venues_table as ven
+join complexes_table as com
+on ven.complex_id = com.complex_id
+order by `Venue Name` desc;
+
+2)
+select distinct 
+	Complex,
+	count(*)over(partition by complex ) as `Number of venues`
+from(
+select 
+	ven.venue_name as Venue, 
+	com.complex_name as Complex
+from venues_table as ven
+join complexes_table as com
+on ven.complex_id = com.complex_id
+)t
+
+3)
+select 
+	Country,
+    Venue,
+    Complex,
+    count(*)over(partition by Country) `Number of venues`
+from(
+select 
+    ven.country_name as Country,
+	ven.venue_name as Venue, 
+	com.complex_name as Complex
+from venues_table as ven
+join complexes_table as com
+on ven.complex_id = com.complex_id
+)t where Country = 'chile';
+
+4)
+
+select 
+    ven.venue_name as Venue, 
+    com.complex_name as Complex,
+    ven.timezone as Timezone,
+    ven.country_name as Country
+from venues_table as ven
+join complexes_table as com
+on ven.complex_id = com.complex_id
+order by Timezone;
+
+
+5)
+select
+   Complex,
+   `Number of venues`
+from(
+select distinct 
+	Complex,
+	count(*)over(partition by complex ) as `Number of venues`
+from(
+select 
+	ven.venue_name as venue, 
+	com.complex_name as Complex
+from venues_table as ven
+join complexes_table as com
+on ven.complex_id = com.complex_id
+)t
+)t1
+where `Number of venues` > 1 
+order by `Number of venues`
+
+
+6)
+select 
+     Country ,
+	 Venue,
+     Complex,
+     count(*)over(partition by Country) `Number of venues in this country`
+from (
+select 
+    ven.venue_name as Venue, 
+    com.complex_name as Complex,
+    ven.country_name as Country
+from venues_table as ven
+join complexes_table as com
+on ven.complex_id = com.complex_id
+)t
+
+7)
+
+select  
+    Complex,
+	venue
+from(
+select 
+	ven.venue_name as Venue, 
+	com.complex_name as Complex
+from venues_table as ven
+join complexes_table as com
+on ven.complex_id = com.complex_id
+)t
+where complex ='Nacional'
+
+                                          ;QUERIES FOR DOUBLES COMPETITIONS ANALYSIS;
+    
+1)
+select 
+        comp_rank.`rank` as `Rank`,
+        comp_table.`name` as `Name`,
+        comp_rank.points as Points
+from  competitors_table as comp_table
+inner join  competitor_rankings_table as comp_rank
+on   comp_table.competitor_id = comp_rank.competitor_id;
+
+2)
+select 
+		com_rank as` Rank`,
+        com_name as `Name`
+from(
+select 
+        comp_rank.`rank` as com_rank,
+        comp_table.`name` as com_name
+ from  competitors_table as comp_table
+inner join  competitor_rankings_table as comp_rank
+on   comp_table.competitor_id = comp_rank.competitor_id
+)t 
+where com_rank < '6';
+
+3)
+
+select 
+        com_name as `Name`
+from(
+select 
+        comp_rank.movement as com_movement,
+        comp_table.`name` as com_name,
+        comp_rank.`rank` as com_rank
+ from  competitors_table as comp_table
+inner join  competitor_rankings_table as comp_rank
+on   comp_table.competitor_id = comp_rank.competitor_id
+)t 
+where com_movement = '0'
+order by com_rank;
+
+
+4)
+
+select 
+        `Name`,
+        `Total points` ,
+         `Rank`
+from(
+select 
+		comp_table.`name` as `Name`,
+        comp_rank.points as `Total points`,
+        comp_table.country as Country,
+        comp_rank.`rank` as `Rank`
+from  competitors_table as comp_table
+join  competitor_rankings_table as comp_rank
+on    comp_table.competitor_id = comp_rank.competitor_id
+)t 
+where Country = 'croatia'
+order by `Rank`;
+
+5)
+select DISTINCT
+     country as Country,
+     count(*)over(partition by country order by country) `Number of competitors`
+from 
+     competitors_table;
+
+6)
+
+select *
+from
+(select 
+        comp_rank.`rank` as `Rank` ,
+		comp_table.`name` as `Name`,
+        comp_rank.points as `Total Points`,
+        comp_table.country as Country
+from  competitors_table as comp_table
+join  competitor_rankings_table as comp_rank
+on    comp_table.competitor_id = comp_rank.competitor_id
+)t  where `Rank`= 1 ;
+ 
+              (OR) 
+select *
+from(
+ SELECT 
+    `Name`,
+    Country,
+    `Rank`,
+    total_points,
+    MAX(total_points) OVER (PARTITION BY `group`) AS `Highest Points`
+FROM (
+    SELECT 
+        comp_table.`name` AS `Name`,
+        comp_table.country AS Country,
+        comp_rank.points AS total_points,
+        comp_rank.`rank` as `Rank`,
+        comp_rank.rank_id AS rank_id,
+        NTILE(2) OVER (ORDER BY comp_rank.rank_id ASC) AS `group`
+    FROM competitors_table AS comp_table
+    JOIN competitor_rankings_table AS comp_rank
+    ON comp_table.competitor_id = comp_rank.competitor_id
+)t )t where total_points = `Highest Points`;
